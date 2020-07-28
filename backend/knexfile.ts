@@ -1,15 +1,12 @@
-import path from 'path'
+const { resolve } = require('path')
 
 module.exports = {
   client: 'sqlite3',
   connection: {
-    filename: path.resolve(__dirname, 'src', 'database', 'database.sqlite'),
+    filename: resolve(__dirname, 'src', 'database', 'database.sqlite'),
   },
   migrations: {
-    directory: path.resolve(__dirname, 'src', 'database', 'migrations'),
-  },
-  seeds: {
-    directory: path.resolve(__dirname, 'src', 'database', 'seeds'),
+    directory: resolve(__dirname, 'src', 'database', 'migrations'),
   },
   useNullAsDefault: true,
 }
