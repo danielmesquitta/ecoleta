@@ -1,13 +1,13 @@
 import React from 'react'
 
 import GlobalStyles from './styles/global'
-import Home from './pages/Home'
+import Routes from './routes'
 
 const App: React.FC = () => {
   return (
     <>
       <GlobalStyles />
-      <Home />
+      <Routes />
     </>
   )
 }

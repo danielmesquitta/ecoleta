@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 // import 'react-toastify/dist/ReactToastify.css'
 
-import { breakpoints, colors } from './variables'
+import { colors } from './variables'
 
 export default createGlobalStyle`
   /*Default*/
@@ -18,21 +18,8 @@ export default createGlobalStyle`
   }
   html{
     min-height: 100%;
+    scroll-behavior: smooth;  
   }
-  html{
-    scroll-behavior: smooth;
-    font-size: 62.5%; /*1rem === 10px*/
-    
-    @media screen and (max-width: ${breakpoints.large}) {
-      font-size: 56.25%;
-    }
-    @media screen and (max-width: ${breakpoints.medium}) {
-      font-size: 50%;
-    }
-    @media screen and (min-width: ${breakpoints.huge}) {
-      font-size: 75%;
-    } 
-  }  
   body{
     background: #f0f0f5;
     background-repeat: no-repeat;
@@ -41,7 +28,7 @@ export default createGlobalStyle`
   }
   body, input, button{
     font-family: 'Roboto', Arial, Helvetica, sans-serif; 
-    font-size: 1.6rem;
+    font-size: 16px;
   }
   button{
     cursor: pointer;
