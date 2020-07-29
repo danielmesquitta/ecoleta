@@ -19,10 +19,6 @@ import {
 const Home: React.FC = () => {
   const navigation = useNavigation()
 
-  function handleNavigation() {
-    navigation.navigate('Points')
-  }
-
   return (
     <Container source={require('../../assets/home-background.png')}>
       <Main>
@@ -34,7 +30,7 @@ const Home: React.FC = () => {
       </Main>
 
       <Footer>
-        <Button onPress={handleNavigation}>
+        <Button onPress={() => navigation.navigate('Points')}>
           <ButtonIcon>
             <Icon />
           </ButtonIcon>
