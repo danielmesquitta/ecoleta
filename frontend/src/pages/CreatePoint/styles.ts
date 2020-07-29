@@ -126,6 +126,7 @@ export const Field = styled.div`
     padding: 16px 24px;
     font-size: 16px;
     color: #6c6c80;
+    cursor: pointer;
   }
 
   label {
