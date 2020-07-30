@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
 import { StatusBar } from 'react-native'
+import MapView, { Marker } from 'react-native-maps'
 
 export const Container = styled.View`
   flex: 1;
@@ -27,7 +28,7 @@ export const MapContainer = styled.View`
   margin-top: 16px;
 `
 
-export const Map = styled.View`
+export const Map = styled(MapView)`
   width: 100%;
   height: 100%;
 `
@@ -42,7 +43,7 @@ export const MapMarkerContainer = styled.View`
   align-items: center;
 `
 
-export const MapMarker = styled.TouchableOpacity`
+export const MapMarker = styled(Marker)`
   width: 90px;
   height: 80px;
 `
@@ -56,7 +57,6 @@ export const MapMarkerImage = styled.Image.attrs({
 
 export const MapMarkerTitle = styled.Text`
   flex: 1;
-  font-family: Roboto_400Regular;
   color: #fff;
   font-size: 13px;
   line-height: 23px;

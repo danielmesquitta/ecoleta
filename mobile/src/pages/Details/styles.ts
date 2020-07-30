@@ -1,9 +1,11 @@
 import styled from 'styled-components/native'
+import { StatusBar } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 
 export const Container = styled.View`
   flex: 1;
-  padding: 40px 32px 32px;
+  padding: 32px;
+  padding-top: ${20 + StatusBar.currentHeight}px;
 `
 
 export const PointImage = styled.Image.attrs({

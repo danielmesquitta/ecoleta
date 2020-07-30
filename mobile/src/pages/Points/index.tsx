@@ -35,14 +35,15 @@ const Points: React.FC = () => {
 
         <MapContainer>
           <Map
-          // initialRegion={{
-          //   latitude: '',
-          //   longitude: '',
-          //   latitudeDelta: 0.014,
-          // }}
+            initialRegion={{
+              latitude: -24,
+              longitude: -24,
+              latitudeDelta: 0.014,
+              longitudeDelta: 0.014,
+            }}
           >
             <MapMarker
-              // coordinates={{ latitude: '', longitude: '' }}
+              coordinate={{ latitude: -24, longitude: -24 }}
               onPress={() => navigation.navigate('Details')}
             >
               <MapMarkerContainer>

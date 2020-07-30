@@ -1,4 +1,5 @@
 import React from 'react'
+import { SafeAreaView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
@@ -21,7 +22,7 @@ const Details: React.FC = () => {
   const navigation = useNavigation()
 
   return (
-    <>
+    <SafeAreaView>
       <Container>
         <TouchableOpacity>
           <Icon name="arrow-left" size={20} color="#34cb79" />
@@ -47,7 +48,7 @@ const Details: React.FC = () => {
           <ButtonText>E-mail</ButtonText>
         </Button>
       </Footer>
-    </>
+    </SafeAreaView>
   )
 }
 
