@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native'
+import { Linking } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
@@ -67,12 +67,16 @@ const Details: React.FC = () => {
         </Address>
       </Container>
       <Footer>
-        <Button onPress={() => {}}>
+        <Button
+          onPress={() =>
+            Linking.openURL(`whatsapp://send?phone=${point.whatsapp}`)
+          }
+        >
           <Whatsapp name="whatsapp" size={20} color="#fff" />
           <ButtonText>Whatsapp</ButtonText>
         </Button>
 
-        <Button onPress={() => {}}>
+        <Button onPress={() => Linking.openURL(`mailto:${point.email}`)}>
           <Icon name="mail" size={20} color="#fff" />
           <ButtonText>Email</ButtonText>
         </Button>

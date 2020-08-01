@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity, ScrollView, Alert } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { TouchableOpacity, ScrollView } from 'react-native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/Feather'
 import { SvgUri } from 'react-native-svg'
 import { WebView, WebViewNavigation } from 'react-native-webview'
@@ -11,11 +11,6 @@ import {
   Title,
   Description,
   MapContainer,
-  // Map,
-  // MapMarkerContainer,
-  // MapMarker,
-  // MapMarkerImage,
-  // MapMarkerTitle,
   ItemsContainer,
   Item,
   ItemTitle,
@@ -27,8 +22,16 @@ interface Item {
   image_url: string
 }
 
+interface Params {
+  uf: string
+  city: string
+}
+
+type Tuple = [string | number, any]
+
 const Points: React.FC = () => {
   const navigation = useNavigation()
+  const { uf, city } = useRoute().params as Params
 
   const [items, setItems] = useState<Item[]>([])
   const [selectedItems, setSelectedItems] = useState([1])
@@ -36,10 +39,6 @@ const Points: React.FC = () => {
   useEffect(() => {
     api.get('items').then(response => setItems(response.data))
   }, [])
-
-  useEffect(() => {
-    console.log(String(selectedItems))
-  }, [selectedItems])
 
   function handleSelectItem(id: number) {
     if (selectedItems.includes(id)) {
@@ -49,20 +48,19 @@ const Points: React.FC = () => {
     }
   }
 
-  function handleNavigation(id: number) {
-    navigation.navigate('Details')
-  }
-
-  function handleWebViewData(event: WebViewNavigation) {
+  function handleNavigation(event: WebViewNavigation) {
     const { url } = event
-
-    if (url.includes('id')) {
-      const { id: pointId } = url
-        .split('?')[1]
-        .split('&')
-        .map(item => item.split('='))
-        .map(([key, value]) => ({ [key]: value }))[3]
-
+    if (url.includes('&id=')) {
+      function fromEntries(arr: Tuple[]) {
+        return Object.assign({}, ...Array.from(arr, ([k, v]) => ({ [k]: v })))
+      }
+      const query = fromEntries(
+        url
+          .split('?')[1]
+          .split('&')
+          .map(item => item.split('=')) as Tuple[]
+      )
+      const { id: pointId } = query
       navigation.navigate('Details', { pointId })
     }
   }
@@ -80,31 +78,13 @@ const Points: React.FC = () => {
         <MapContainer>
           <WebView
             source={{
-              uri: `http://192.168.100.26:3000/maps?city=Araguari&uf=MG&items=${String(
+              uri: `http://192.168.100.26:3000/maps?city=${city}&uf=${uf}&items=${String(
                 selectedItems
               )}`,
             }}
             geolocationEnabled={true}
-            onNavigationStateChange={handleWebViewData}
+            onNavigationStateChange={handleNavigation}
           />
-          {/* <Map
-            initialRegion={{
-              latitude: -24,
-              longitude: -24,
-              latitudeDelta: 0.014,
-              longitudeDelta: 0.014,
-            }}
-          >
-            <MapMarker
-              coordinate={{ latitude: -24, longitude: -24 }}
-              onPress={() => navigation.navigate('Details')}
-            >
-              <MapMarkerContainer>
-                <MapMarkerImage source={{}} />
-                <MapMarkerTitle>Mercado</MapMarkerTitle>
-              </MapMarkerContainer>
-            </MapMarker>
-          </Map> */}
         </MapContainer>
       </Container>
       <ItemsContainer>

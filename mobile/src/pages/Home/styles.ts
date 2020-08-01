@@ -36,7 +36,7 @@ export const Footer = styled.View``
 
 export const Select = styled.View``
 
-export const Input = styled.View`
+export const Input = styled.TextInput`
   height: 60px;
   background-color: #fff;
   border-radius: 10px;

@@ -1,5 +1,5 @@
-import React from 'react'
-import { Image } from 'react-native'
+import React, { useState } from 'react'
+import { Image, KeyboardAvoidingView, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 import {
@@ -19,25 +19,49 @@ import {
 const Home: React.FC = () => {
   const navigation = useNavigation()
 
-  return (
-    <Container source={require('../../assets/home-background.png')}>
-      <Main>
-        <Image source={require('../../assets/logo.png')} />
-        <Title>Seu marketplace de coleta de resíduos</Title>
-        <Description>
-          Ajudamos pessoas a encontrar pontos de coleta de forma eficiente
-        </Description>
-      </Main>
+  const [uf, setUf] = useState('')
+  const [city, setCity] = useState('')
 
-      <Footer>
-        <Button onPress={() => navigation.navigate('Points')}>
-          <ButtonIcon>
-            <Icon />
-          </ButtonIcon>
-          <ButtonText>Entrar</ButtonText>
-        </Button>
-      </Footer>
-    </Container>
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <Container source={require('../../assets/home-background.png')}>
+        <Main>
+          <Image source={require('../../assets/logo.png')} />
+          <Title>Seu marketplace de coleta de resíduos</Title>
+          <Description>
+            Ajudamos pessoas a encontrar pontos de coleta de forma eficiente
+          </Description>
+        </Main>
+
+        <Footer>
+          <Input
+            placeholder="Digite a Uf"
+            maxLength={2}
+            autoCapitalize="characters"
+            autoCorrect={false}
+            value={uf}
+            onChangeText={setUf}
+          />
+
+          <Input
+            placeholder="Digite a Cidade"
+            autoCapitalize="words"
+            value={city}
+            onChangeText={setCity}
+          />
+
+          <Button onPress={() => navigation.navigate('Points', { uf, city })}>
+            <ButtonIcon>
+              <Icon />
+            </ButtonIcon>
+            <ButtonText>Entrar</ButtonText>
+          </Button>
+        </Footer>
+      </Container>
+    </KeyboardAvoidingView>
   )
 }
 
