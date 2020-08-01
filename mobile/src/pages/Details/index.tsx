@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import Whatsapp from 'react-native-vector-icons/FontAwesome'
+import api from '../../services/api'
 
 import {
   Container,
@@ -18,23 +19,51 @@ import {
   ButtonText,
 } from './styles'
 
+interface Params {
+  pointId: string
+}
+
+interface Data {
+  point: {
+    image: string
+    name: string
+    email: string
+    whatsapp: string
+    city: string
+    uf: string
+  }
+  items: { title: string }[]
+}
+
 const Details: React.FC = () => {
   const navigation = useNavigation()
+  const { pointId } = useRoute().params as Params
+
+  const [data, setData] = useState<Data>({} as Data)
+
+  useEffect(() => {
+    api.get(`points/${pointId}`).then(response => setData(response.data))
+  }, [])
+
+  if (!data.point) {
+    return null
+  }
+  const { point, items } = data
 
   return (
-    <SafeAreaView>
+    <>
       <Container>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={navigation.goBack}>
           <Icon name="arrow-left" size={20} color="#34cb79" />
         </TouchableOpacity>
 
-        <PointImage source={{ uri: '' }} />
-        <PointName>Mercado</PointName>
-        <PointItems>Lâmpadas, Oleo de cozinha</PointItems>
+        <PointImage source={{ uri: point.image }} />
+        <PointName>{point.name}</PointName>
+        <PointItems>{items.map(item => item.title).join(', ')}</PointItems>
 
         <Address>
           <AddressTitle>Endereço</AddressTitle>
-          <AddressContent>Araguari, MG</AddressContent>
+          <AddressContent>{`${point.city}, ${point.uf}`}</AddressContent>
         </Address>
       </Container>
       <Footer>
@@ -45,10 +74,10 @@ const Details: React.FC = () => {
 
         <Button onPress={() => {}}>
           <Icon name="mail" size={20} color="#fff" />
-          <ButtonText>E-mail</ButtonText>
+          <ButtonText>Email</ButtonText>
         </Button>
       </Footer>
-    </SafeAreaView>
+    </>
   )
 }
 

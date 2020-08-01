@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity, ScrollView } from 'react-native'
+import { TouchableOpacity, ScrollView, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/Feather'
 import { SvgUri } from 'react-native-svg'
-import { WebView, WebViewMessageEvent } from 'react-native-webview'
+import { WebView, WebViewNavigation } from 'react-native-webview'
 import api from '../../services/api'
 
 import {
@@ -53,8 +53,18 @@ const Points: React.FC = () => {
     navigation.navigate('Details')
   }
 
-  function handleOnMessage(event: WebViewMessageEvent) {
-    event.nativeEvent.data
+  function handleWebViewData(event: WebViewNavigation) {
+    const { url } = event
+
+    if (url.includes('id')) {
+      const { id: pointId } = url
+        .split('?')[1]
+        .split('&')
+        .map(item => item.split('='))
+        .map(([key, value]) => ({ [key]: value }))[3]
+
+      navigation.navigate('Details', { pointId })
+    }
   }
 
   return (
@@ -75,6 +85,7 @@ const Points: React.FC = () => {
               )}`,
             }}
             geolocationEnabled={true}
+            onNavigationStateChange={handleWebViewData}
           />
           {/* <Map
             initialRegion={{

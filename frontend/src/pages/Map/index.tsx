@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import api from '../../services/api'
 
 import { Container, Global } from './styles'
@@ -24,6 +24,7 @@ interface Query {
 }
 
 const Map: React.FC = () => {
+  const history = useHistory()
   const query: Query = Object.fromEntries(
     useLocation()
       .search.replace('?', '')
@@ -46,7 +47,6 @@ const Map: React.FC = () => {
     if (items) {
       parsedItems = items.split(',').map(item => Number(item))
     }
-    console.log(query)
     api
       .get('points', {
         params: {
@@ -59,7 +59,8 @@ const Map: React.FC = () => {
   }, [])
 
   function handleMarkerClick(pointId: number) {
-    window.alert(pointId)
+    const { city, uf, items } = query
+    history.push(`maps?city=${city}&uf=${uf}&items=${items}&id=${pointId}`)
   }
 
   return (

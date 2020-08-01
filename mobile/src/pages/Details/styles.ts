@@ -2,10 +2,9 @@ import styled from 'styled-components/native'
 import { StatusBar } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
   flex: 1;
   padding: 32px;
-  padding-top: ${20 + StatusBar.currentHeight}px;
 `
 
 export const PointImage = styled.Image.attrs({
@@ -52,6 +51,8 @@ export const Footer = styled.View`
   padding: 20px 32px;
   flex-direction: row;
   justify-content: space-between;
+  position: absolute;
+  bottom: 0;
 `
 
 export const Button = styled(RectButton)`
