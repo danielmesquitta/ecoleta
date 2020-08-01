@@ -1,6 +1,5 @@
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 import { StatusBar } from 'react-native'
-import MapView, { Marker } from 'react-native-maps'
 
 export const Container = styled.View`
   flex: 1;
@@ -28,47 +27,17 @@ export const MapContainer = styled.View`
   margin-top: 16px;
 `
 
-export const Map = styled(MapView)`
-  width: 100%;
-  height: 100%;
-`
-
-export const MapMarkerContainer = styled.View`
-  width: 90px;
-  height: 70px;
-  background-color: #34cb79;
-  flex-direction: column;
-  border-radius: 8px;
-  overflow: hidden;
-  align-items: center;
-`
-
-export const MapMarker = styled(Marker)`
-  width: 90px;
-  height: 80px;
-`
-
-export const MapMarkerImage = styled.Image.attrs({
-  resizeMode: 'cover',
-})`
-  width: 90px;
-  height: 45px;
-`
-
-export const MapMarkerTitle = styled.Text`
-  flex: 1;
-  color: #fff;
-  font-size: 13px;
-  line-height: 23px;
-`
-
 export const ItemsContainer = styled.View`
   flex-direction: row;
   margin-top: 16px;
   margin-bottom: 32px;
 `
 
-export const Item = styled.TouchableOpacity`
+interface ItemProps {
+  selected?: boolean
+}
+
+export const Item = styled.TouchableOpacity<ItemProps>`
   background-color: #fff;
   border-width: 2px;
   border-color: #eee;
@@ -80,14 +49,17 @@ export const Item = styled.TouchableOpacity`
   align-items: center;
   justify-content: space-between;
   text-align: center;
+
+  ${props =>
+    props.selected &&
+    css`
+      background: #e1faec;
+      border-color: #34cb79;
+      border-width: 2px;
+    `}
 `
 
 export const ItemTitle = styled.Text`
   text-align: center;
   font-size: 13px;
-`
-
-export const SelectedItem = styled.View`
-  border-color: #34cb79;
-  border-width: 2px;
 `

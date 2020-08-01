@@ -1,27 +1,61 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/Feather'
 import { SvgUri } from 'react-native-svg'
+import { WebView, WebViewMessageEvent } from 'react-native-webview'
+import api from '../../services/api'
 
 import {
   Container,
   Title,
   Description,
   MapContainer,
-  Map,
-  MapMarkerContainer,
-  MapMarker,
-  MapMarkerImage,
-  MapMarkerTitle,
+  // Map,
+  // MapMarkerContainer,
+  // MapMarker,
+  // MapMarkerImage,
+  // MapMarkerTitle,
   ItemsContainer,
   Item,
   ItemTitle,
-  SelectedItem,
 } from './styles'
+
+interface Item {
+  id: number
+  title: string
+  image_url: string
+}
 
 const Points: React.FC = () => {
   const navigation = useNavigation()
+
+  const [items, setItems] = useState<Item[]>([])
+  const [selectedItems, setSelectedItems] = useState([1])
+
+  useEffect(() => {
+    api.get('items').then(response => setItems(response.data))
+  }, [])
+
+  useEffect(() => {
+    console.log(String(selectedItems))
+  }, [selectedItems])
+
+  function handleSelectItem(id: number) {
+    if (selectedItems.includes(id)) {
+      setSelectedItems(selectedItems.filter(selectedId => selectedId !== id))
+    } else {
+      setSelectedItems([...selectedItems, id])
+    }
+  }
+
+  function handleNavigation(id: number) {
+    navigation.navigate('Details')
+  }
+
+  function handleOnMessage(event: WebViewMessageEvent) {
+    event.nativeEvent.data
+  }
 
   return (
     <>
@@ -34,7 +68,15 @@ const Points: React.FC = () => {
         <Description>Encontre no mapa um ponto de coleta.</Description>
 
         <MapContainer>
-          <Map
+          <WebView
+            source={{
+              uri: `http://192.168.100.26:3000/maps?city=Araguari&uf=MG&items=${String(
+                selectedItems
+              )}`,
+            }}
+            geolocationEnabled={true}
+          />
+          {/* <Map
             initialRegion={{
               latitude: -24,
               longitude: -24,
@@ -51,7 +93,7 @@ const Points: React.FC = () => {
                 <MapMarkerTitle>Mercado</MapMarkerTitle>
               </MapMarkerContainer>
             </MapMarker>
-          </Map>
+          </Map> */}
         </MapContainer>
       </Container>
       <ItemsContainer>
@@ -62,59 +104,16 @@ const Points: React.FC = () => {
             paddingHorizontal: 20,
           }}
         >
-          <Item onPress={() => {}}>
-            <SvgUri
-              width={42}
-              height={42}
-              uri="http://192.168.100.26:3333/uploads/lampadas.svg"
-            />
-            <ItemTitle>Item</ItemTitle>
-          </Item>
-
-          <Item onPress={() => {}}>
-            <SvgUri
-              width={42}
-              height={42}
-              uri="http://192.168.100.26:3333/uploads/lampadas.svg"
-            />
-            <ItemTitle>Item</ItemTitle>
-          </Item>
-
-          <Item onPress={() => {}}>
-            <SvgUri
-              width={42}
-              height={42}
-              uri="http://192.168.100.26:3333/uploads/lampadas.svg"
-            />
-            <ItemTitle>Item</ItemTitle>
-          </Item>
-
-          <Item onPress={() => {}}>
-            <SvgUri
-              width={42}
-              height={42}
-              uri="http://192.168.100.26:3333/uploads/lampadas.svg"
-            />
-            <ItemTitle>Item</ItemTitle>
-          </Item>
-
-          <Item onPress={() => {}}>
-            <SvgUri
-              width={42}
-              height={42}
-              uri="http://192.168.100.26:3333/uploads/lampadas.svg"
-            />
-            <ItemTitle>Item</ItemTitle>
-          </Item>
-
-          <Item onPress={() => {}}>
-            <SvgUri
-              width={42}
-              height={42}
-              uri="http://192.168.100.26:3333/uploads/lampadas.svg"
-            />
-            <ItemTitle>Item</ItemTitle>
-          </Item>
+          {items.map(item => (
+            <Item
+              key={String(item.id)}
+              onPress={() => handleSelectItem(item.id)}
+              selected={selectedItems.includes(item.id)}
+            >
+              <SvgUri width={42} height={42} uri={item.image_url} />
+              <ItemTitle>{item.title}</ItemTitle>
+            </Item>
+          ))}
         </ScrollView>
       </ItemsContainer>
     </>
