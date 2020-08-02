@@ -8,6 +8,7 @@ import axios from 'axios'
 
 import api from '../../services/api'
 import logo from '../../assets/logo.svg'
+import Dropzone from '../../components/Dropzone'
 import { Container, Field, FieldGroup, ItemsGrid, Item } from './styles'
 
 interface Item {
@@ -50,6 +51,7 @@ const CreatePoint: React.FC = () => {
 
   const [selectedUf, setSelectedUf] = useState('')
   const [selectedCity, setSelectedCity] = useState('')
+  const [selectedFile, setSelectedFile] = useState<File>()
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(position => {
@@ -112,21 +114,33 @@ const CreatePoint: React.FC = () => {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
+
+    if (!selectedFile) {
+      toast.error('Selecione uma imagem para seu ponto de coleta')
+      return
+    }
+    if (selectedItems.length === 0) {
+      toast.error('Selecione pelo menos um item de coleta')
+      return
+    }
+
     const { name, email, whatsapp } = inputData
     const uf = selectedUf
     const city = selectedCity
     const [latitude, longitude] = location
     const items = selectedItems
-    const data = {
-      name,
-      email,
-      whatsapp,
-      uf,
-      city,
-      latitude,
-      longitude,
-      items,
-    }
+
+    const data = new FormData()
+    data.append('name', name)
+    data.append('email', email)
+    data.append('whatsapp', whatsapp)
+    data.append('uf', uf)
+    data.append('city', city)
+    data.append('latitude', String(latitude))
+    data.append('longitude', String(longitude))
+    data.append('items', items.join(','))
+    data.append('image', selectedFile)
+
     await api.post('points', data)
     history.push('/')
     toast.success('Novo ponto de coleta registrado')
@@ -147,6 +161,8 @@ const CreatePoint: React.FC = () => {
           Cadastro do ponto <br /> de coleta
         </h1>
 
+        <Dropzone onFileUpload={setSelectedFile} />
+
         <fieldset>
           <legend>
             <h2>Dados</h2>
@@ -159,6 +175,7 @@ const CreatePoint: React.FC = () => {
               name="name"
               id="name"
               onChange={handleInputChange}
+              required
             />
           </Field>
 
@@ -170,6 +187,7 @@ const CreatePoint: React.FC = () => {
                 name="email"
                 id="email"
                 onChange={handleInputChange}
+                required
               />
             </Field>
 
@@ -180,6 +198,7 @@ const CreatePoint: React.FC = () => {
                 name="whatsapp"
                 id="whatsapp"
                 onChange={handleInputChange}
+                required
               />
             </Field>
           </FieldGroup>
@@ -212,8 +231,9 @@ const CreatePoint: React.FC = () => {
                 id="uf"
                 value={selectedUf}
                 onChange={handleSelectUf}
+                required
               >
-                <option value="0">Selecione uma UF</option>
+                <option value="">Selecione uma UF</option>
                 {ufs.map(uf => (
                   <option value={uf.initials} key={uf.initials}>
                     {`${uf.initials} - ${uf.name}`}
@@ -229,8 +249,9 @@ const CreatePoint: React.FC = () => {
                 id="city"
                 value={selectedCity}
                 onChange={handleSelectCity}
+                required
               >
-                <option value="0">Selecione uma cidade</option>
+                <option value="">Selecione uma cidade</option>
                 {cities.map(city => (
                   <option value={city} key={city}>
                     {city}

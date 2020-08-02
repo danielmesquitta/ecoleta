@@ -25,7 +25,7 @@ interface Params {
 
 interface Data {
   point: {
-    image: string
+    image_url: string
     name: string
     email: string
     whatsapp: string
@@ -57,7 +57,7 @@ const Details: React.FC = () => {
           <Icon name="arrow-left" size={20} color="#34cb79" />
         </TouchableOpacity>
 
-        <PointImage source={{ uri: point.image }} />
+        <PointImage source={{ uri: point.image_url }} />
         <PointName>{point.name}</PointName>
         <PointItems>{items.map(item => item.title).join(', ')}</PointItems>
 
