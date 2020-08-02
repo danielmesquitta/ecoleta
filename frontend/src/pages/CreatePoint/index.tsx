@@ -216,7 +216,7 @@ const CreatePoint: React.FC = () => {
                 <option value="0">Selecione uma UF</option>
                 {ufs.map(uf => (
                   <option value={uf.initials} key={uf.initials}>
-                    {`${uf.name} (${uf.initials})`}
+                    {`${uf.initials} - ${uf.name}`}
                   </option>
                 ))}
               </select>

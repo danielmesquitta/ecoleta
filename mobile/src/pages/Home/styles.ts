@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import { RectButton } from 'react-native-gesture-handler'
 import Feather from 'react-native-vector-icons/Feather'
+import { Picker } from '@react-native-community/picker'
 
 export const Container = styled.ImageBackground.attrs({
   imageStyle: {
@@ -34,7 +35,15 @@ export const Description = styled.Text`
 
 export const Footer = styled.View``
 
-export const Select = styled.View``
+export const Select = styled.View`
+  height: 60px;
+  background-color: #fff;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  padding: 0 24px;
+  font-size: 16px;
+  justify-content: center;
+`
 
 export const Input = styled.TextInput`
   height: 60px;
