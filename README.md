@@ -40,6 +40,7 @@
 
 - [ReactJS](https://reactjs.org/)
 - [React Native](https://reactnative.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
 - [React Navigation](https://reactnavigation.org/)
 - [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons)
 - [React Native Webview](https://github.com/react-native-community/react-native-webview)
