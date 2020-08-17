@@ -55,6 +55,14 @@
 - [Styled Components](https://styled-components.com/)
 - [Axios](https://github.com/axios/axios)
 
+<br/>
+
+<p align="center">
+  <img src="demo-mobile.gif" width="200px">
+</p>
+
+<br/>
+
 ## GETTING STARTED
 
 ### Requirements
