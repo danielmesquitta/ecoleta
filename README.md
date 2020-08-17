@@ -34,6 +34,14 @@
 - [React Dropzone](https://react-dropzone.js.org/)
 - [React Toastfy](https://fkhadra.github.io/react-toastify/introduction/)
 
+<br/>
+
+<p align="center">
+  <img src="demo-web.gif">
+</p>
+
+<br/>
+
 ## MOBILE
 
 ### Technologies
